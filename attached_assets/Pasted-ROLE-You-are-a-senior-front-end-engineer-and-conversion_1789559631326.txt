@@ -1,0 +1,274 @@
+ROLE
+You are a senior front-end engineer and conversion-focused web designer. Build a
+production-ready, single-page sales site for a digital product sold in India.
+
+STACK — non-negotiable
+- Plain semantic HTML + modern CSS + vanilla JavaScript. No React, no Next.js, no
+  Tailwind, no build step, no npm dependencies.
+- Deployable as a Replit Static Deployment. Everything must work from a static file
+  server with no backend.
+- File layout: index.html, /assets/css/site.css, /assets/js/site.js,
+  /assets/js/exit-clock.js, /assets/img/, /tool/index.html, /about/index.html,
+  /privacy/index.html, /terms/index.html, /refund/index.html,
+  /thank-you/index.html, 404.html, robots.txt, sitemap.xml.
+- Total page weight under 400KB excluding images. No external JS libraries at all.
+
+BRAND
+Name: Exit Clock. Product: "The Layoff Kit — by Exit Clock".
+Positioning: an education and awareness brand that teaches Indian IT professionals what
+happens — and on what timeline — when a job ends. Dates, entitlements, deadlines. Not
+legal advice, not HR-speak, not motivational layoff content.
+Voice: warm, direct, specific. Short sentences. No hype, no emoji, no exclamation marks,
+no "unlock your potential" language. Numbers and dates carry the emotion.
+
+PALETTE (use exactly these tokens)
+  --navy:      #0B1B30   (primary dark ground, hero, footer)
+  --navy-soft: #14304A   (secondary dark surfaces)
+  --yellow:    #FFCF33   (single accent — CTAs, clock numerals, underlines)
+  --ink:       #142029   (body text on light)
+  --ink-soft:  #4A5865
+  --ground:    #F4F6F8   (page background)
+  --panel:     #FFFFFF
+  --line:      #D7DFE6
+  --amber:     #A25A15   (caution notes only)
+Yellow is the ONLY accent. Never use it for body text. Never use a gradient, glassmorphism,
+purple-to-blue SaaS look, or a 3D blob. Think financial-newspaper clarity, not startup deck.
+
+TYPOGRAPHY
+Headings: Archivo 700/800. Body: Public Sans 400/500/600. Numerals in the clock cards and
+tool: IBM Plex Mono 500. Load from Google Fonts with preconnect + display=swap, weights
+limited to exactly those listed. Base body size 16.5px, line-height 1.6, headings with
+letter-spacing -0.022em and text-wrap: balance.
+
+AUDIENCE
+Indian IT/ITES professionals, 26–42, in Bengaluru, Hyderabad, Pune, NCR, Chennai. Service
+companies, GCCs and product firms. Salaried, EPF-covered, English/Hinglish, mobile-first.
+They arrive in one of three states and the page must speak to all three:
+  ANXIOUS   — rumours in the org, nothing announced. Wants preparedness.
+  NOTIFIED  — notice served, clock running. Wants to know what to demand, by when.
+  EXITED    — mid-F&F, chasing settlement. Wants to know what's withheld and what recourse.
+
+PAGE STRUCTURE — build in this exact order
+
+0. ANNOUNCEMENT BAR (navy, one line, dismissible, state saved in memory only)
+   "Founding price: ₹999 for the first 50 buyers. It goes up after that — and you keep this
+   edition's updates free."
+   No countdown timer. No fake stock counter. Ever.
+
+1. STICKY HEADER
+   Left: wordmark "EXIT CLOCK" in Archivo 800, with a small square clock glyph in yellow.
+   Right: links — Free tool · What's inside · Pricing · FAQ · About — plus a yellow button
+   "Get the Kit — ₹999". On mobile: wordmark + button only, links collapse into a menu.
+   Header gets a subtle shadow after 40px of scroll.
+
+2. HERO (navy ground, full-bleed)
+   H1: "Most people sign their exit papers before they know what they're owed."
+   Sub: "Four clocks start on your last working day. Wages inside two working days.
+   Gratuity inside thirty. A provident-fund withdrawal that can cost you 10% in tax if you
+   get the timing wrong. And a health policy that may already have ended without anyone
+   telling you."
+   Line 2: "The Layoff Kit is the India-specific system for the weeks either side of an
+   exit — what to ask, what to check, what to sign, and what your runway actually is."
+   Primary CTA (yellow): "Build your exit schedule — free" → scrolls to #tool
+   Secondary CTA (outline): "Get the Kit — ₹999" → checkout URL
+   Under the buttons, small: "No account. Nothing leaves your browser."
+
+3. FOUR CLOCKS STRIP (directly below hero, sitting on the navy, 4 columns → 2 → 1)
+   Each card: a large mono numeral in yellow, a label, one line of rule.
+   "2 working days"  — Wages due after your last working day, under the Code on Wages
+   "30 days"         — The window in which gratuity is generally payable once it becomes due
+   "1 and 2 months"  — When a PF advance, then final settlement, become available
+   "Unknown"         — The date your employer's health cover ends, until you get it in writing
+   The fourth card is deliberately the odd one out — style its numeral in white, not yellow.
+
+4. THE FREE TOOL  (id="tool", light ground, the emotional centre of the page)
+   Heading: "Enter your last working day. Get every deadline that follows."
+   Embed the Exit Clock deadline tool I am uploading (06_Exit_Clock_Deadline_Tool.html).
+   Port its logic into /assets/js/exit-clock.js and restyle it to this palette. It must run
+   entirely client-side — no dates, salaries or names are ever sent anywhere.
+   EMAIL GATE, implemented exactly like this:
+     - On submit, immediately show the FIRST TWO deadlines in full, free, with no email.
+     - Below them, a blurred/locked panel: "Your full schedule — 9 more dates, the rule
+       behind each one, and the exact wording to send HR."
+     - One email field + button "Email me my schedule". POST to FORM_ENDPOINT_PLACEHOLDER.
+     - On success, unlock the full schedule inline AND offer a "Download as PDF" that uses
+       window.print() against a print stylesheet. No server needed.
+     - A person who refuses the email still keeps the two free deadlines. Never take away
+       something already shown.
+   Under the tool: "Free, and free forever. This runs in your browser — your dates never
+   reach a server."
+
+5. THE PROBLEM (light)
+   Heading: "The facts are public. They're just scattered, dated, and easy to find three
+   weeks too late."
+   Intro: "Almost everything written about layoffs in India is either American advice that
+   doesn't apply, or a ₹99 PDF assembled from blog posts."
+   Then five fact cards, each with the claim in bold, one sentence of consequence, and a
+   small mono line "Verified: Sept 2026 · source: [SOURCE_PLACEHOLDER]":
+   a) The four Labour Codes came into force in November 2025 and introduced a common
+      definition of "wages" with a 50% allowance rule that can change the base your gratuity
+      is calculated on. An old salary-structure calculator can now give you the wrong number.
+   b) Gratuity is generally 15 days' wages for each completed year, currently capped at
+      ₹20 lakh — and fixed-term employees became eligible at one year, not five, on contract
+      expiry.
+   c) A taxable PF withdrawal before five years of continuous service can attract 10% TDS
+      under section 192A above ₹50,000. Service with a previous employer can count, if the
+      PF was transferred.
+   d) Leave encashment for non-government employees is exempt only up to a statutory ceiling
+      currently at ₹25 lakh, on a lower-of calculation — and whether you can encash at all is
+      set by your employer's policy.
+   e) Group medical cover can end on your last working day, at month end, or on some other
+      policy-defined date. Not, as most people assume, at the end of a severance period.
+
+6. WHO IT'S FOR — three cards, each headed by the state, in plain second person
+   "You were laid off this week." / "You think it's coming." / "You've been out a while."
+   Use the three paragraphs I am providing in SALES_PAGE_COPY.md verbatim.
+
+7. WHAT YOU GET (navy ground, so it reads as the product block)
+   Six items with page counts, as a 2-column grid of cards:
+   - The Exit Clock — free, and free forever (browser-only deadline tool)
+   - The 37-page India Edition playbook — twelve modules, each ending in something you made
+   - The 22-page Action Workbook — twenty worksheets
+   - The Financial Runway Calculator — burn, runway, stress date, dues tracker, offer scorecard
+   - Ten role packs — backend, frontend, QA, DevOps, data, embedded, security, product,
+     sales, marketing. Each with a 30-day proof project.
+   - The Scripts Pack — the exact wording for HR, F&F follow-ups and insurance queries
+   Above the grid, a product mock: the cover images I upload, fanned, with a soft shadow.
+
+8. WHAT YOU SHOULD BE ABLE TO DO AFTERWARDS
+   Seven checklist lines, yellow tick marks, from SALES_PAGE_COPY.md verbatim. This is the
+   outcome block — do not turn it into feature bullets.
+
+9. ABOUT THE AUTHOR (light, two columns: photo left, copy right)
+   Headshot left. Name and credential line as the heading:
+     "Subarna Das"
+     "Tech professional with more than a decade in the IT industry — and a manager who had to
+      tell people what came next."
+   Sub-heading: "Why I built this". Then this body copy, verbatim, paragraph breaks preserved:
+
+     "Someone close to me signed a settlement without asking for a component-wise breakdown. By
+     the time we realised what was missing, the people who could have fixed it had stopped
+     replying.
+
+     Then I started seeing the same gaps everywhere — missed deadlines, benefits ending without
+     warning, and people accepting full-and-final figures they couldn't actually verify.
+
+     I got tired of explaining the same things over WhatsApp. So I looked for something
+     India-specific to share. What I found was either American advice that didn't apply here or
+     ₹99 PDFs stitched together from blogs.
+
+     The real answers exist — buried in government portals and written in language nobody wants
+     to decode during the worst week of their working life.
+
+     So I built this to make those answers simple, practical, and usable when people actually
+     need them."
+
+   Then a bordered note, visually distinct, headed "What I am, and what I am not":
+     "I am not a lawyer, a chartered accountant, an insurance adviser or a financial planner.
+     Nothing here is advice about your specific situation. What this kit does is narrower: it
+     tells you which questions to ask, which deadlines start when, and where the official rule
+     actually lives — so that when you do talk to HR, or a CA, or a lawyer, you already know
+     what you're asking about."
+   It is a trust device, not fine print — do not shrink it or grey it out.
+   Link "Read the full research note" to /about.
+
+10. PRICING — ONE card, centred, max-width 34rem
+   Eyebrow: "One bundle. No tiers."
+   Price: ₹999 in large Archivo, with ₹1,499 struck through beside it in ink-soft.
+   Under it: "Founding price for the first 50 buyers."
+   Anchor line: "About a day of a mid-level salary, against a settlement usually worth lakhs."
+   A short included-list repeating the six items in one line each.
+   Button (yellow, full width): "Get the Layoff Kit — ₹999" → CHECKOUT_URL_PLACEHOLDER,
+   target="_blank" rel="noopener".
+   Under the button, three reassurance lines with small icons: "UPI, cards, netbanking" ·
+   "Instant download" · "7 days, no questions, full refund".
+   NO pricing table. NO tier comparison. NO "most popular" badge.
+
+11. FAQ — accordion using native <details>/<summary>, first one open.
+   Use the seven "Honest answers" from SALES_PAGE_COPY.md verbatim, including the answers
+   that say No. Do not soften them.
+
+12. FINAL CTA (navy)
+   "You cannot control whether the layoff happens. You can control whether you find out
+   about a deadline before it passes, or three weeks after."
+   Two buttons: free tool, and buy.
+
+13. FOOTER
+   Wordmark, one-line description, Instagram @exit.clock, contact email, and links to
+   /about, /privacy, /terms, /refund, changelog.
+   Legal line, always visible, never hidden in a modal:
+   "General educational information for India. Not legal, tax, investment or medical advice.
+   Verify current rules before high-stakes decisions. Exit Clock is not affiliated with EPFO,
+   ESIC, IRDAI or any government body."
+
+SUPPORTING PAGES — build real ones, not stubs
+/about        full author page, research sources, "why it will not be right forever"
+/privacy      what the tool does not collect; what the email list is used for
+/terms        licence, single-user, no redistribution
+/refund       7 days, no questions, how to ask, how long the refund takes
+/thank-you    post-purchase: how to open the files, where to start by situation
+404.html      on-brand, links back to the tool
+
+TECHNICAL STANDARDS — treat these as acceptance criteria
+- Mobile-first. Must be correct and comfortable at 360px wide. No horizontal scroll at any
+  width. Minimum 16px side gutters. Tap targets ≥44px.
+- Fluid type with clamp(). Layout with CSS grid + flex, container queries where a component
+  needs them. No fixed pixel widths on containers.
+- Core Web Vitals: LCP under 2.0s on 4G, CLS effectively zero (every image gets explicit
+  width/height or aspect-ratio), INP under 200ms. Hero text is the LCP element — no hero
+  image that competes with it.
+- Images: WebP with correct dimensions, loading="lazy" on everything below the fold,
+  fetchpriority="high" on nothing except a genuine hero image if one exists.
+- Accessibility to WCAG 2.2 AA: real landmark elements, one h1, logical heading order,
+  visible focus rings (2px yellow with offset), all interactive elements keyboard-reachable,
+  aria-expanded on the mobile menu, contrast ≥4.5:1 for body text — check yellow-on-navy and
+  fix if it fails, prefers-reduced-motion honoured (kill all transforms and scroll animation).
+- Dark mode: define the full light palette on bare :root, then override only the tokens
+  inside @media (prefers-color-scheme: dark). Body always gets an explicit background.
+- SEO: unique title and meta description, canonical link, Open Graph + Twitter card with a
+  1200x630 image, JSON-LD for Product (with offers, priceCurrency INR) and FAQPage, sitemap.xml,
+  robots.txt.
+- Analytics: leave a clearly commented placeholder block for a privacy-friendly script
+  (Plausible or Umami). Do not add Google Analytics. Do not set any cookie.
+- Track outbound clicks on every CTA with a single data-cta="..." attribute and one delegated
+  listener, so I can wire analytics later in one place.
+- Print stylesheet so the tool's schedule prints cleanly on A4.
+
+KNOWN VALUES — use these directly, do not make them placeholders:
+  contact email     exitclock2026@gmail.com
+  instagram         https://instagram.com/exit.clock
+  price             999 (founding) / 1499 (list)  — define ONCE in the CONFIG object
+
+PLACEHOLDERS — put every one in a single CONFIG object at the top of site.js, and list them
+in a README so I can find them in 30 seconds:
+  CHECKOUT_URL_PLACEHOLDER, FORM_ENDPOINT_PLACEHOLDER, CHANGELOG_URL_PLACEHOLDER,
+  ANALYTICS_PLACEHOLDER
+
+SOURCE LINKS for the five fact cards in section 5 — use these, all verified 16 Sep 2026:
+  a) Labour Codes / wages definition  https://www.labour.gov.in/  (in force 21 Nov 2025,
+     corrigendum 19 Dec 2025)
+  b) Gratuity                          https://www.labour.gov.in/  (Code on Social Security, 2020)
+  c) EPF s.192A TDS                    https://www.incometax.gov.in/  and https://www.epfindia.gov.in/
+  d) Leave encashment                  https://www.incometax.gov.in/  (CBDT Notification 31/2023)
+  e) Health cover / portability        https://irdai.gov.in/
+Each card's stamp reads "Verified: 16 Sep 2026". Do not invent a deeper link than these —
+a wrong deep link is worse than a portal link.
+
+HARD RULES — violating any of these is a failed build
+- Never invent a testimonial, a review, a star rating, a buyer count, a logo wall, or a
+  "featured in" strip. There are no customers yet. Leave a commented empty section where
+  testimonials will go later.
+- Never add a countdown timer, a fake low-stock counter, an exit-intent popup, or a
+  spinning-wheel discount. The founding-price-at-50 line is the only urgency on this page.
+- Never write a claim I did not give you. If you need connective copy, keep it factual and
+  flag it in the README as "agent-written, needs review".
+- Never promise a job, an interview, a settlement figure, or eligibility for any government
+  benefit.
+- Never use the words: unlock, supercharge, game-changer, revolutionary, journey, empower,
+  hustle, grind, 10x.
+- No lorem ipsum anywhere. No placeholder stock photos of people in offices.
+
+DELIVER
+Working site, plus a README.md listing: every placeholder and where it lives, the palette
+tokens, and how to change the price in one place. Then tell me the three things you were
+least sure about.

@@ -1,0 +1,840 @@
+<title>The Exit Clock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --navy: #17324D;
+  --navy-deep: #0F2439;
+  --teal: #1C7A72;
+  --teal-ink: #14615A;
+  --teal-wash: #E4F1EF;
+  --on-teal: #FFFFFF;
+  --amber: #A9601A;
+  --amber-wash: #FBEEDF;
+  --red: #A32F2F;
+  --red-wash: #FBE8E6;
+  --info-wash: #E9F0F7;
+
+  --ground: #EEF1F5;
+  --panel: #FFFFFF;
+  --panel-2: #F6F8FA;
+  --ink: #15202B;
+  --ink-soft: #4C5A67;
+  --ink-faint: #78868F;
+  --line: #D9E0E7;
+  --line-soft: #E7ECF1;
+  --field: #FFFFFF;
+  --field-line: #C6D0DA;
+  --shadow: 0 1px 2px rgba(15,36,57,.07), 0 10px 30px rgba(15,36,57,.06);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --navy: #C9DCEC;
+    --navy-deep: #E2ECF5;
+    --teal: #5FC5B4;
+    --teal-ink: #7FD6C6;
+    --teal-wash: #12302D;
+    --on-teal: #08201D;
+    --amber: #E0A163;
+    --amber-wash: #332514;
+    --red: #E9928A;
+    --red-wash: #341E1C;
+    --info-wash: #182636;
+
+    --ground: #0C141C;
+    --panel: #141F29;
+    --panel-2: #1A2632;
+    --ink: #E3EAF0;
+    --ink-soft: #A2B1BD;
+    --ink-faint: #7B8A96;
+    --line: #26333F;
+    --line-soft: #1F2C37;
+    --field: #0F1922;
+    --field-line: #33434F;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 32px rgba(0,0,0,.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --navy: #C9DCEC;
+  --navy-deep: #E2ECF5;
+  --teal: #5FC5B4;
+  --teal-ink: #7FD6C6;
+  --teal-wash: #12302D;
+  --on-teal: #08201D;
+  --amber: #E0A163;
+  --amber-wash: #332514;
+  --red: #E9928A;
+  --red-wash: #341E1C;
+  --info-wash: #182636;
+
+  --ground: #0C141C;
+  --panel: #141F29;
+  --panel-2: #1A2632;
+  --ink: #E3EAF0;
+  --ink-soft: #A2B1BD;
+  --ink-faint: #7B8A96;
+  --line: #26333F;
+  --line-soft: #1F2C37;
+  --field: #0F1922;
+  --field-line: #33434F;
+  --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 32px rgba(0,0,0,.3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { margin: 0; color: var(--navy); font-weight: 700; letter-spacing: -0.012em; }
+p { margin: 0; }
+.mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.label {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .66rem; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--ink-faint); font-weight: 500;
+}
+
+/* ---------- shell ---------- */
+.wrap { width: min(76rem, calc(100% - 2.5rem)); margin-inline: auto; }
+
+header.top {
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  padding: 1.5rem 0 1.35rem;
+}
+.top-inner { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; }
+header.top h1 { font-size: 1.5rem; }
+header.top p.sub { color: var(--ink-soft); font-size: .93rem; margin-top: .25rem; max-width: 52ch; }
+.privacy {
+  display: inline-flex; align-items: center; gap: .45rem;
+  background: var(--teal-wash); color: var(--teal-ink);
+  border: 1px solid color-mix(in srgb, var(--teal) 30%, transparent);
+  border-radius: 999px; padding: .3rem .75rem;
+  font-size: .76rem; font-weight: 600; white-space: nowrap;
+}
+.privacy .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); }
+
+.example-banner {
+  background: var(--amber-wash);
+  border-bottom: 1px solid color-mix(in srgb, var(--amber) 32%, transparent);
+  color: var(--amber);
+  font-size: .84rem; font-weight: 500;
+  padding: .55rem 0;
+}
+.example-banner .wrap { display: flex; gap: .6rem; align-items: baseline; }
+
+main { padding: 1.6rem 0 3rem; }
+.cols { display: grid; grid-template-columns: 20.5rem minmax(0, 1fr); gap: 1.6rem; align-items: start; }
+@media (max-width: 940px) { .cols { grid-template-columns: 1fr; } }
+
+/* ---------- form ---------- */
+.form-card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 4px;
+  box-shadow: var(--shadow); overflow: hidden; position: sticky; top: 1rem;
+}
+@media (max-width: 940px) { .form-card { position: static; } }
+fieldset { border: 0; margin: 0; padding: 1rem 1.1rem 1.15rem; border-bottom: 1px solid var(--line-soft); display: grid; gap: .8rem; }
+fieldset:last-of-type { border-bottom: 0; }
+legend { padding: 0; }
+.field { display: grid; gap: .28rem; }
+.field > label { font-size: .82rem; font-weight: 600; color: var(--ink); }
+.field .hint { font-size: .74rem; color: var(--ink-faint); line-height: 1.4; }
+input[type="date"], input[type="number"], input[type="text"], select {
+  width: 100%; font: inherit; font-size: .88rem;
+  padding: .44rem .55rem;
+  background: var(--field); color: var(--ink);
+  border: 1px solid var(--field-line); border-radius: 3px;
+}
+input[type="number"] { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+input:focus-visible, select:focus-visible, button:focus-visible, .check:focus-visible {
+  outline: 2px solid var(--teal); outline-offset: 1px;
+}
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.toggle { display: flex; align-items: flex-start; gap: .5rem; font-size: .82rem; color: var(--ink); }
+.toggle input { margin: .28rem 0 0; accent-color: var(--teal); }
+.actions { padding: .9rem 1.1rem 1.1rem; display: grid; gap: .5rem; background: var(--panel-2); border-top: 1px solid var(--line-soft); }
+button {
+  font: inherit; font-size: .84rem; font-weight: 600;
+  padding: .5rem .8rem; border-radius: 3px; cursor: pointer;
+  border: 1px solid var(--field-line); background: var(--panel); color: var(--ink);
+}
+button.primary { background: var(--teal-ink); border-color: var(--teal-ink); color: var(--on-teal); }
+button:hover { border-color: var(--teal); }
+.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.copied { font-size: .75rem; color: var(--teal-ink); min-height: 1em; }
+
+/* ---------- summary ---------- */
+.summary {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  background: var(--panel); border: 1px solid var(--line); border-radius: 4px;
+  overflow: hidden; margin-bottom: 1.1rem; box-shadow: var(--shadow);
+}
+.stat { padding: .85rem 1rem; border-right: 1px solid var(--line-soft); display: grid; gap: .15rem; }
+.stat:last-child { border-right: 0; }
+.stat .v { font-family: "IBM Plex Mono", monospace; font-size: 1.15rem; font-weight: 600; color: var(--navy); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.stat .v.alert { color: var(--red); }
+.stat .v.warn { color: var(--amber); }
+.stat .n { font-size: .74rem; color: var(--ink-faint); }
+
+/* ---------- schedule ---------- */
+.sched { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; box-shadow: var(--shadow); overflow: hidden; }
+.sched-head {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: .8rem 1.1rem; border-bottom: 1px solid var(--line); background: var(--panel-2);
+}
+.sched-head h2 { font-size: 1rem; }
+.filters { display: flex; gap: .3rem; }
+.filters button { padding: .25rem .6rem; font-size: .75rem; font-weight: 500; border-radius: 999px; }
+.filters button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--ground); }
+
+.item {
+  display: grid; grid-template-columns: 1.6rem 6.9rem minmax(0, 1fr);
+  gap: .85rem; padding: .95rem 1.1rem;
+  border-bottom: 1px solid var(--line-soft);
+  border-left: 3px solid transparent;
+  align-items: start;
+}
+.item:last-child { border-bottom: 0; }
+.item.s-now { border-left-color: var(--red); background: color-mix(in srgb, var(--red-wash) 55%, transparent); }
+.item.s-over { border-left-color: var(--red); }
+.item.s-soon { border-left-color: var(--amber); }
+.item.s-later { border-left-color: var(--line); }
+.item.s-done { border-left-color: var(--teal); opacity: .58; }
+@media (max-width: 620px) {
+  .item { grid-template-columns: 1.6rem minmax(0, 1fr); }
+  .item .when { grid-column: 2; }
+}
+.check {
+  appearance: none; -webkit-appearance: none;
+  width: 1.05rem; height: 1.05rem; margin-top: .2rem;
+  border: 1.5px solid var(--field-line); border-radius: 3px;
+  background: var(--field); cursor: pointer; position: relative; flex: none;
+}
+.check:checked { background: var(--teal-ink); border-color: var(--teal-ink); }
+.check:checked::after {
+  content: ""; position: absolute; left: 5px; top: 1px;
+  width: 4px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(42deg);
+}
+.when { display: grid; gap: .1rem; }
+.when .d { font-family: "IBM Plex Mono", monospace; font-size: .82rem; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.item.s-over .when .d, .item.s-now .when .d { color: var(--red); }
+.item.s-soon .when .d { color: var(--amber); }
+.when .rel { font-size: .7rem; color: var(--ink-faint); }
+.body h3 { font-size: .95rem; font-weight: 600; color: var(--ink); }
+.item.s-done .body h3 { text-decoration: line-through; text-decoration-color: var(--ink-faint); }
+.body .do { font-size: .87rem; color: var(--ink-soft); margin-top: .18rem; }
+.body .est {
+  display: inline-block; margin-top: .4rem; padding: .18rem .5rem;
+  background: var(--info-wash); border-radius: 3px;
+  font-family: "IBM Plex Mono", monospace; font-size: .78rem; color: var(--navy); font-variant-numeric: tabular-nums;
+}
+.body .rule {
+  margin-top: .45rem; padding-left: .65rem; border-left: 2px solid var(--line);
+  font-size: .78rem; color: var(--ink-faint); line-height: 1.45;
+}
+.body .say {
+  margin-top: .45rem; padding: .5rem .65rem;
+  background: var(--panel-2); border: 1px solid var(--line-soft); border-radius: 3px;
+  font-size: .8rem; color: var(--ink-soft); font-style: italic;
+}
+.body .say b { font-style: normal; font-weight: 600; color: var(--ink); display: block; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .18rem; }
+.tag {
+  display: inline-block; margin-left: .4rem; vertical-align: 1px;
+  font-family: "IBM Plex Mono", monospace; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase;
+  padding: .1rem .35rem; border-radius: 2px; font-weight: 600;
+}
+.tag.money { background: var(--teal-wash); color: var(--teal-ink); }
+.tag.confirm { background: var(--red-wash); color: var(--red); }
+.tag.health { background: var(--info-wash); color: var(--navy); }
+
+.empty { padding: 2rem 1.1rem; text-align: center; color: var(--ink-faint); font-size: .9rem; }
+
+.foot-note {
+  margin-top: 1.1rem; padding: .95rem 1.1rem;
+  background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--amber);
+  border-radius: 4px; font-size: .82rem; color: var(--ink-soft); display: grid; gap: .4rem;
+}
+.foot-note b { color: var(--ink); }
+
+footer.legal { padding: 1.4rem 0 2rem; font-size: .78rem; color: var(--ink-faint); }
+footer.legal .wrap { display: grid; gap: .35rem; max-width: 68ch; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .item { transition: opacity .15s ease; }
+}
+@media print {
+  body { background: #fff; }
+  .form-card, .filters, .example-banner, .privacy, .actions { display: none !important; }
+  .cols { grid-template-columns: 1fr; }
+  .sched, .summary { box-shadow: none; }
+}
+</style>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <div>
+      <h1>The Exit Clock</h1>
+      <p class="sub">Your last working day starts several clocks at once. Enter it, and this lays them out as dates — what to ask for, when it is due, and what to say.</p>
+    </div>
+    <span class="privacy"><span class="dot"></span> Nothing leaves your device</span>
+  </div>
+</header>
+
+<div class="example-banner" id="exampleBanner">
+  <div class="wrap"><b>Example schedule.</b><span>Showing a 30 Sep 2026 exit so you can see how it works. Change any field to make it yours.</span></div>
+</div>
+
+<main>
+  <div class="wrap cols">
+
+    <form class="form-card" id="form" autocomplete="off">
+      <fieldset>
+        <legend class="label">Your exit</legend>
+        <div class="field">
+          <label for="lwd">Last working day</label>
+          <input type="date" id="lwd" name="lwd">
+        </div>
+        <div class="field">
+          <label for="service">Completed years of continuous service</label>
+          <input type="number" id="service" name="service" min="0" max="50" step="0.1">
+          <span class="hint">Counts service transferred from a previous employer where PF was transferred.</span>
+        </div>
+        <div class="field">
+          <label for="empType">Employment type</label>
+          <select id="empType" name="empType">
+            <option value="permanent">Permanent</option>
+            <option value="fixed">Fixed-term contract</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="signBy">Release / waiver signature deadline</label>
+          <input type="date" id="signBy" name="signBy">
+          <span class="hint">Leave blank if nothing was put in front of you to sign.</span>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="label">Money &amp; benefits</legend>
+        <div class="field">
+          <label for="wages">Monthly wages for gratuity (basic + DA)</label>
+          <input type="number" id="wages" name="wages" min="0" step="1000" placeholder="₹">
+          <span class="hint">Used only for a rough gratuity estimate. Optional.</span>
+        </div>
+        <div class="field">
+          <label for="coverEnds">Employer health cover ends</label>
+          <input type="date" id="coverEnds" name="coverEnds">
+          <span class="hint">Blank means unconfirmed — which becomes your first action.</span>
+        </div>
+        <label class="toggle"><input type="checkbox" id="hasEquity"> <span>I hold vested equity / ESOPs / RSUs</span></label>
+        <div class="field" id="equityWrap" hidden>
+          <label for="exerciseDays">Exercise window after exit (days)</label>
+          <input type="number" id="exerciseDays" min="1" max="3650" step="1">
+          <span class="hint">Check your grant documents. 90 days is common but not universal.</span>
+        </div>
+        <label class="toggle"><input type="checkbox" id="hasPF"> <span>I have an EPF account (UAN)</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend class="label">Runway</legend>
+        <div class="row2">
+          <div class="field">
+            <label for="cash">Liquid cash</label>
+            <input type="number" id="cash" min="0" step="10000" placeholder="₹">
+          </div>
+          <div class="field">
+            <label for="burn">Monthly burn</label>
+            <input type="number" id="burn" min="0" step="1000" placeholder="₹">
+          </div>
+        </div>
+        <span class="hint">Survival-mode essentials only, not your old lifestyle budget.</span>
+      </fieldset>
+
+      <div class="actions">
+        <div class="btn-row">
+          <button type="button" id="copyBtn" class="primary">Copy schedule</button>
+          <button type="button" id="printBtn">Print / PDF</button>
+        </div>
+        <button type="button" id="resetBtn">Clear and start fresh</button>
+        <p class="copied" id="copied"></p>
+      </div>
+    </form>
+
+    <section>
+      <div class="summary" id="summary"></div>
+
+      <div class="sched">
+        <div class="sched-head">
+          <h2>Your schedule</h2>
+          <div class="filters">
+            <button type="button" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" data-filter="open" aria-pressed="false">Open</button>
+            <button type="button" data-filter="soon" aria-pressed="false">Needs action</button>
+          </div>
+        </div>
+        <div id="list"></div>
+      </div>
+
+      <div class="foot-note">
+        <p><b>Every date here is a prompt to ask, not a guarantee.</b> Rules, portals and employer policies change, and your contract may give you better terms than the statutory minimum. Where a date matters — a signature, a withdrawal, a policy lapse — verify it against the current official source before you act.</p>
+        <p>Public holidays are not built into the working-day counts. Check the calendar for your state before you treat a two-day deadline as expired.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="legal">
+  <div class="wrap">
+    <p>Companion to The Layoff Kit, India Edition. General educational information — not legal, tax, investment or financial advice.</p>
+    <p>Everything you type stays in this browser. There is no account, no server and no analytics; clearing your browser data clears this schedule.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORE = "exitclock.v1";
+  var DAY = 86400000;
+
+  var EXAMPLE = {
+    lwd: "2026-09-30", service: "6.5", empType: "permanent", signBy: "2026-10-07",
+    wages: "85000", coverEnds: "", hasEquity: true, exerciseDays: "90",
+    hasPF: true, cash: "600000", burn: "100000", done: {}, isExample: true
+  };
+
+  var state = load() || Object.assign({}, EXAMPLE);
+  var filter = "all";
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORE);
+      if (!raw) return null;
+      var v = JSON.parse(raw);
+      if (!v.done) v.done = {};
+      v.isExample = false;
+      return v;
+    } catch (e) { return null; }
+  }
+  function save() {
+    try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {}
+  }
+
+  /* ---------- dates ---------- */
+  function parseDate(s) {
+    if (!s) return null;
+    var p = String(s).split("-");
+    if (p.length !== 3) return null;
+    var d = new Date(+p[0], +p[1] - 1, +p[2], 12, 0, 0, 0);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  function today() { var t = new Date(); t.setHours(12, 0, 0, 0); return t; }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+  function addMonths(d, n) { var x = new Date(d.getTime()); x.setMonth(x.getMonth() + n); return x; }
+  function addWorkingDays(d, n) {
+    var x = new Date(d.getTime()), added = 0;
+    while (added < n) {
+      x = addDays(x, 1);
+      var wd = x.getDay();
+      if (wd !== 0 && wd !== 6) added++;
+    }
+    return x;
+  }
+  var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function fmt(d) {
+    return String(d.getDate()).padStart(2, "0") + " " + MON[d.getMonth()] + " " + d.getFullYear();
+  }
+  function daysBetween(a, b) { return Math.round((b.getTime() - a.getTime()) / DAY); }
+  function relative(d) {
+    var n = daysBetween(today(), d);
+    if (n === 0) return "today";
+    if (n === 1) return "tomorrow";
+    if (n === -1) return "1 day ago";
+    if (n < 0) return Math.abs(n) + " days ago";
+    if (n < 45) return "in " + n + " days";
+    var m = Math.round(n / 30);
+    return "in about " + m + " month" + (m === 1 ? "" : "s");
+  }
+  function inr(n) {
+    if (!isFinite(n)) return "-";
+    return "₹" + Math.round(n).toLocaleString("en-IN");
+  }
+
+  /* ---------- rules ---------- */
+  function buildSchedule() {
+    var lwd = parseDate(state.lwd);
+    var items = [];
+    var service = parseFloat(state.service);
+    var wages = parseFloat(state.wages);
+    if (!lwd) return items;
+
+    var shortService = isFinite(service) && service < 5;
+
+    items.push({
+      id: "terms", date: null, tag: "confirm",
+      title: "Get the separation terms in writing",
+      dueLabel: "Do now",
+      do: "Ask for the separation letter and a component-wise breakdown of every amount: salary due, notice pay, severance, variable pay, leave encashment, gratuity, reimbursements. One lump-sum figure is not enough to check anything against.",
+      rule: "There is no statutory deadline for this, which is exactly why it slips. Everything below depends on having it.",
+      say: "Could you send the separation letter and a component-wise calculation of the full and final settlement, with the payment date for each component?"
+    });
+
+    if (state.signBy) {
+      var sd = parseDate(state.signBy);
+      if (sd) items.push({
+        id: "sign", date: sd, tag: "confirm",
+        title: "Signature deadline on the release / waiver",
+        do: "Do not sign to be agreeable, and do not sign it in the room. Read what it gives up — often the right to claim or dispute later. If meaningful money or a non-compete is involved, get it reviewed first.",
+        rule: "A deadline set by your employer, not by law. You can ask for an extension to take advice; that request is normal and is usually granted.",
+        say: "I'd like to review this properly before signing. Could you confirm the deadline, and whether an extension of a few days is possible?"
+      });
+    }
+
+    items.push({
+      id: "wages", date: addWorkingDays(lwd, 2), tag: "money",
+      title: "Wages due",
+      do: "Earned salary up to your last working day should be settled by now. If it has not landed, ask in writing and keep the reply.",
+      rule: "Code on Wages: where an employee is removed, dismissed, retrenched, resigns, or becomes unemployed on closure, wages are generally payable within two working days. This covers wages — not necessarily every other component of the full and final settlement.",
+      say: "My last working day was " + fmt(lwd) + ". Could you confirm the date on which wages due have been or will be credited?"
+    });
+
+    if (!state.coverEnds) {
+      items.push({
+        id: "cover-confirm", date: null, tag: "confirm",
+        title: "Confirm the exact date your health cover ends",
+        dueLabel: "Do now",
+        do: "Get the date in writing from HR and from the insurer or TPA — they do not always agree. Cover can end on your last working day, at month end, or on another policy-defined date. Do not assume you are covered through a severance period.",
+        rule: "Employer group cover is governed by the policy, not by your notice period. This is the single most expensive thing to discover late.",
+        say: "Could you confirm in writing the exact date group medical cover ends for me and my dependants, and give me the insurer or TPA contact for continuity options?"
+      });
+    } else {
+      var ce = parseDate(state.coverEnds);
+      if (ce) {
+        items.push({
+          id: "cover-replace", date: addDays(ce, -21), tag: "health",
+          title: "Start arranging replacement health cover",
+          do: "Begin three weeks before the cover ends. Ask the insurer about migrating the group policy to an individual or family floater, and what waiting-period credits carry over. Underwriting and paperwork take time — and older dependants may need a separate policy rather than one floater.",
+          rule: "The IRDAI framework recognises migration and portability, but the credits and timing depend on the policy and the insurer. Starting on the last day is starting too late.",
+          say: "I am moving off a group policy ending " + fmt(ce) + ". What migration options are available to me, what waiting-period credits carry over, and what documents do you need?"
+        });
+        items.push({
+          id: "cover-ends", date: ce, tag: "health",
+          title: "Employer health cover ends",
+          do: "From this date, any hospitalisation is on you unless a replacement policy is already active. Check whether an ongoing claim or approved hospitalisation has separate continuity rules.",
+          rule: "Confirmed by you. Re-confirm with the insurer if anything about the exit changes.",
+          say: ""
+        });
+      }
+    }
+
+    items.push({
+      id: "docs", date: addDays(lwd, 30), tag: "",
+      title: "Chase your exit documents",
+      do: "Relieving or experience letter, full-and-final statement, PF exit date marked by the employer, gratuity calculation if eligible, and a post-exit HR contact with a ticket number. These get harder to obtain as the people who handled your exit move on.",
+      rule: "Timelines are set by company policy. Thirty days is a practical point at which to escalate politely rather than a statutory limit.",
+      say: "Following up on my exit documents. Could you share the relieving letter and the full and final statement, and confirm my PF exit date has been updated?"
+    });
+
+    var gratuityEligible = false;
+    var gratuityNote = "";
+    if (isFinite(service)) {
+      if (state.empType === "fixed" && service >= 1) {
+        gratuityEligible = true;
+        gratuityNote = "Ministry FAQs in 2026 clarify that a fixed-term employee is eligible for gratuity on contract expiry after one year of service.";
+      } else if (service >= 5) {
+        gratuityEligible = true;
+        gratuityNote = "Payable on termination after at least five years of continuous service. Part-years over six months count as a full year.";
+      } else {
+        gratuityNote = "Below five years of continuous service, gratuity is generally not payable — but the five-year condition does not apply in cases such as death, disablement, or expiry of eligible fixed-term employment. Check your contract too: it may offer better terms than the statutory minimum.";
+      }
+    }
+    if (gratuityEligible) {
+      var years = Math.floor(service) + ((service % 1) > 0.5 ? 1 : 0);
+      var est = null;
+      if (isFinite(wages) && wages > 0) est = Math.min((15 / 26) * wages * years, 2000000);
+      items.push({
+        id: "gratuity", date: addDays(lwd, 30), tag: "money",
+        title: "Gratuity should be paid",
+        do: "Ask for the wage base used, the completed years counted, and how the part-year was treated. If it is unpaid or looks short, raise it in writing before escalating.",
+        est: est ? "Rough estimate: " + inr(est) + "  ·  15/26 × " + inr(wages) + " × " + years + " years" + (est >= 2000000 ? " (at the ₹20 lakh cap)" : "") : null,
+        rule: gratuityNote + " Standard rate is 15 days' wages per completed year, currently capped at ₹20 lakh, generally payable within 30 days of becoming due. The 2025 labour codes introduced a common wage definition with a 50% allowance rule that can change the wage base — do not rely on an old salary-structure calculator.",
+        say: "Could you share the gratuity calculation, including the wage base and the years of service counted?"
+      });
+    } else if (isFinite(service)) {
+      items.push({
+        id: "gratuity-check", date: null, tag: "",
+        title: "Check whether gratuity applies to you anyway",
+        dueLabel: "Worth asking",
+        do: "Your service is under the usual threshold, but exceptions exist and your employment contract or company policy may be more generous than the statutory minimum. It costs one email to ask.",
+        rule: gratuityNote,
+        say: "Could you confirm whether gratuity is payable in my case, and if so share the calculation?"
+      });
+    }
+
+    items.push({
+      id: "leave", date: addDays(lwd, 30), tag: "money",
+      title: "Leave encashment settled",
+      do: "Two separate questions: whether your employer's policy entitles you to encash unused earned leave, and how it is taxed. Confirm the first in writing before arguing about the second.",
+      rule: "Entitlement is set by employer policy. For non-government employees, the exemption on encashment at retirement or otherwise is subject to a lower-of calculation with a statutory ceiling currently at ₹25 lakh. Encashment during employment is treated differently.",
+      say: "Could you confirm my leave balance at exit, the encashment policy applied, and the amount included in the settlement?"
+    });
+
+    if (state.hasPF) {
+      items.push({
+        id: "pf-advance", date: addDays(addMonths(lwd, 1), 1), tag: "money",
+        title: "PF unemployment advance becomes available",
+        do: "Available if you are still unemployed. Treat it as a decision, not automatic emergency cash — work out your runway first. Before claiming, check that your UAN, Aadhaar-linked mobile, bank account, PAN and e-nomination are all correct, and that your employer has marked your exit date.",
+        rule: "EPFO's current FAQ allows a non-refundable advance of up to 75% of the PF balance after more than one month of unemployment. EPFO has been considering changes to withdrawal rules — check the live member portal before applying.",
+        say: ""
+      });
+      items.push({
+        id: "pf-final", date: addMonths(lwd, 2), tag: "money",
+        title: "PF final settlement window opens",
+        do: shortService
+          ? "If you join another EPF-covered employer, transferring usually beats withdrawing — it preserves continuity of service and avoids the tax hit below. For EPS, withdrawing pension benefits can affect future pension service; EPF and EPS are not one balance."
+          : "If you join another EPF-covered employer, evaluate transfer rather than withdrawing by default — continuity of service can matter later. EPF and EPS are separate; withdrawing pension benefits can affect future pension service.",
+        est: shortService ? "Under 5 years of service: 10% TDS may apply under §192A above ₹50,000" : null,
+        rule: "EPFO's current FAQ allows final settlement on retirement or two months after ceasing employment. Income Tax Department guidance: a taxable EPF withdrawal before five years of continuous service can attract 10% TDS under section 192A where the payment exceeds ₹50,000 — service with a previous employer counts where the PF was transferred, and certain terminations beyond your control are treated differently.",
+        say: ""
+      });
+    }
+
+    if (state.hasEquity) {
+      var win = parseInt(state.exerciseDays, 10);
+      if (!isFinite(win) || win < 1) win = 90;
+      items.push({
+        id: "equity", date: addDays(lwd, win), tag: "money",
+        title: "Equity exercise window closes",
+        do: "Confirm the real date against your grant documents — this is a placeholder built from the window you entered. Check your leaver classification, what is vested, the exercise cost, and the tax due on exercise. Vested options you cannot afford to exercise are a decision, not a formality.",
+        rule: "Set entirely by your plan documents, not by statute. Windows can be short, and missing one is irreversible.",
+        say: "Could you send my vested position, the exercise window end date, my leaver classification and the exercise process?"
+      });
+    }
+
+    var cash = parseFloat(state.cash), burn = parseFloat(state.burn);
+    if (isFinite(cash) && isFinite(burn) && burn > 0) {
+      var months = cash / burn;
+      items.push({
+        id: "stress", date: addDays(today(), Math.round(months * 30)), tag: "",
+        title: "Stress date — decide before this, not on it",
+        do: months < 3
+          ? "Under three months of runway. Protect housing, food, health and minimum debt; contact lenders before you miss anything rather than after; consider a freelance bridge alongside the search."
+          : (months < 6
+            ? "Three to six months. Move to a defensive budget now and make pipeline decisions weekly rather than monthly."
+            : "Six months or more. Preserve the runway while improving role fit, proof of work and optionality — you can afford to be targeted."),
+        est: months.toFixed(1) + " months of runway  ·  " + inr(cash) + " ÷ " + inr(burn) + " per month",
+        rule: "Runway sets your negotiating position. A two-month runway and a twelve-month runway can rationally produce different decisions about the same offer — that is constraint-aware judgement, not weakness.",
+        say: ""
+      });
+    }
+
+    items.push({
+      id: "public", date: addDays(lwd, 14), tag: "",
+      title: "Check what public support you actually qualify for",
+      do: "For most salaried professionals this is a small line, not a rescue: employer dues, savings and PF choices matter more. Still worth 30 minutes — National Career Service for vacancies and counsellors, and ESIC schemes if you were an insured person.",
+      rule: "ESIC's Atal Beemit Vyakti Kalyan Yojana has been extended for a further year, from 1 July 2026 to 30 June 2027 (approved at the 198th ESIC meeting; PIB release dated 30 June 2026). Eligibility still depends on ESI coverage and contribution conditions — confirm your own status on esic.gov.in before planning around it. Verified: 16 September 2026.",
+      say: ""
+    });
+
+    items.sort(function (a, b) {
+      if (!a.date && !b.date) return 0;
+      if (!a.date) return -1;
+      if (!b.date) return 1;
+      return a.date - b.date;
+    });
+    return items;
+  }
+
+  function statusOf(item) {
+    if (state.done[item.id]) return "done";
+    if (!item.date) return "now";
+    var n = daysBetween(today(), item.date);
+    if (n < 0) return "over";
+    if (n <= 10) return "soon";
+    return "later";
+  }
+
+  /* ---------- render ---------- */
+  function render() {
+    var items = buildSchedule();
+    var list = document.getElementById("list");
+    var summary = document.getElementById("summary");
+    document.getElementById("exampleBanner").hidden = !state.isExample;
+
+    if (!items.length) {
+      summary.innerHTML = "";
+      list.innerHTML = '<p class="empty">Enter your last working day to build the schedule.</p>';
+      return;
+    }
+
+    var openItems = items.filter(function (i) { return !state.done[i.id]; });
+    var overdue = openItems.filter(function (i) { return statusOf(i) === "over" || statusOf(i) === "now"; });
+    var next = openItems.filter(function (i) { return i.date && i.date >= today(); })[0];
+    var lwd = parseDate(state.lwd);
+    var sinceExit = lwd ? daysBetween(lwd, today()) : null;
+    var cash = parseFloat(state.cash), burn = parseFloat(state.burn);
+    var months = (isFinite(cash) && isFinite(burn) && burn > 0) ? cash / burn : null;
+
+    var stats = [
+      { v: next ? fmt(next.date) : "—", n: next ? "Next deadline · " + next.title.toLowerCase() : "No dated items open", cls: "" },
+      { v: overdue.length ? String(overdue.length) : "0", n: overdue.length === 1 ? "item needs action now" : "items need action now", cls: overdue.length ? "alert" : "" },
+      { v: sinceExit === null ? "—" : (sinceExit < 0 ? Math.abs(sinceExit) + " days" : sinceExit + " days"), n: sinceExit !== null && sinceExit < 0 ? "until your last working day" : "since your last working day", cls: "" },
+      { v: months === null ? "—" : months.toFixed(1), n: "months of runway", cls: months !== null && months < 3 ? "alert" : (months !== null && months < 6 ? "warn" : "") },
+      { v: openItems.length + "/" + items.length, n: "still open", cls: "" }
+    ];
+    summary.innerHTML = stats.map(function (s) {
+      return '<div class="stat"><span class="v ' + s.cls + '">' + esc(s.v) + '</span><span class="n">' + esc(s.n) + "</span></div>";
+    }).join("");
+
+    var shown = items.filter(function (i) {
+      var st = statusOf(i);
+      if (filter === "open") return st !== "done";
+      if (filter === "soon") return st === "now" || st === "over" || st === "soon";
+      return true;
+    });
+
+    if (!shown.length) {
+      list.innerHTML = '<p class="empty">Nothing in this view. Try “All”.</p>';
+      return;
+    }
+
+    list.innerHTML = shown.map(function (i) {
+      var st = statusOf(i);
+      var when = i.date
+        ? '<span class="d">' + fmt(i.date) + '</span><span class="rel">' + esc(relative(i.date)) + "</span>"
+        : '<span class="d">' + esc(i.dueLabel || "Do now") + '</span><span class="rel">no fixed date</span>';
+      return '<div class="item s-' + st + '">' +
+        '<input class="check" type="checkbox" data-id="' + i.id + '"' + (state.done[i.id] ? " checked" : "") +
+        ' aria-label="Mark done: ' + esc(i.title) + '">' +
+        '<div class="when">' + when + "</div>" +
+        '<div class="body">' +
+          "<h3>" + esc(i.title) + (i.tag ? '<span class="tag ' + i.tag + '">' + (i.tag === "money" ? "money" : i.tag === "health" ? "health" : "confirm") + "</span>" : "") + "</h3>" +
+          '<p class="do">' + esc(i.do) + "</p>" +
+          (i.est ? '<span class="est">' + esc(i.est) + "</span>" : "") +
+          (i.rule ? '<p class="rule">' + esc(i.rule) + "</p>" : "") +
+          (i.say ? '<p class="say"><b>What to say</b>' + esc(i.say) + "</p>" : "") +
+        "</div>" +
+      "</div>";
+    }).join("");
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function asText() {
+    var items = buildSchedule();
+    var out = ["THE EXIT CLOCK", "Last working day: " + (state.lwd ? fmt(parseDate(state.lwd)) : "-"), ""];
+    items.forEach(function (i) {
+      out.push((state.done[i.id] ? "[x] " : "[ ] ") + (i.date ? fmt(i.date) : (i.dueLabel || "Do now")) + " — " + i.title);
+      out.push("    " + i.do);
+      if (i.est) out.push("    " + i.est);
+      if (i.say) out.push("    Say: " + i.say);
+      out.push("");
+    });
+    out.push("Every date is a prompt to verify, not a guarantee. Not legal or financial advice.");
+    return out.join("\n");
+  }
+
+  /* ---------- wiring ---------- */
+  var fields = ["lwd", "service", "empType", "signBy", "wages", "coverEnds", "exerciseDays", "cash", "burn"];
+  var checks = ["hasEquity", "hasPF"];
+
+  function fill() {
+    fields.forEach(function (k) {
+      var el = document.getElementById(k);
+      if (el) el.value = state[k] == null ? "" : state[k];
+    });
+    checks.forEach(function (k) {
+      var el = document.getElementById(k);
+      if (el) el.checked = !!state[k];
+    });
+    document.getElementById("equityWrap").hidden = !state.hasEquity;
+  }
+
+  function onInput() {
+    if (state.isExample) state.isExample = false;
+    fields.forEach(function (k) {
+      var el = document.getElementById(k);
+      if (el) state[k] = el.value;
+    });
+    checks.forEach(function (k) {
+      var el = document.getElementById(k);
+      if (el) state[k] = el.checked;
+    });
+    document.getElementById("equityWrap").hidden = !state.hasEquity;
+    save();
+    render();
+  }
+
+  document.getElementById("form").addEventListener("input", onInput);
+  document.getElementById("form").addEventListener("change", onInput);
+
+  document.getElementById("list").addEventListener("change", function (e) {
+    var t = e.target;
+    if (!t.classList.contains("check")) return;
+    state.done[t.getAttribute("data-id")] = t.checked;
+    if (state.isExample) state.isExample = false;
+    save();
+    render();
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".filters button"), function (b) {
+    b.addEventListener("click", function () {
+      filter = b.getAttribute("data-filter");
+      Array.prototype.forEach.call(document.querySelectorAll(".filters button"), function (o) {
+        o.setAttribute("aria-pressed", String(o === b));
+      });
+      render();
+    });
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    var text = asText();
+    var note = document.getElementById("copied");
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      note.textContent = ok ? "Copied to clipboard." : "Could not copy — use Print / PDF instead.";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        note.textContent = "Copied to clipboard.";
+      }).catch(fallback);
+    } else { fallback(); }
+    setTimeout(function () { note.textContent = ""; }, 4000);
+  });
+
+  document.getElementById("printBtn").addEventListener("click", function () { window.print(); });
+
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    state = { lwd: "", service: "", empType: "permanent", signBy: "", wages: "", coverEnds: "",
+              hasEquity: false, exerciseDays: "90", hasPF: true, cash: "", burn: "", done: {}, isExample: false };
+    try { localStorage.removeItem(STORE); } catch (e) {}
+    fill();
+    render();
+    document.getElementById("lwd").focus();
+  });
+
+  fill();
+  render();
+})();
+</script>

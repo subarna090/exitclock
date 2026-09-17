@@ -1,0 +1,517 @@
+<title>Know What You're Owed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --navy: #14304A;
+  --navy-deep: #0B1F31;
+  --teal: #1C7A72;
+  --teal-ink: #14615A;
+  --teal-wash: #E3F0EE;
+  --amber: #A25A15;
+  --amber-wash: #FAEEDD;
+
+  --ground: #F0F3F6;
+  --panel: #FFFFFF;
+  --panel-2: #F5F8FA;
+  --ink: #142029;
+  --ink-soft: #4A5865;
+  --ink-faint: #76848F;
+  --line: #D7DFE6;
+  --line-soft: #E6EBF0;
+  --on-dark: #EAF1F7;
+  --on-dark-soft: #A3BACD;
+  --on-teal: #FFFFFF;
+  --shadow: 0 1px 2px rgba(11,31,49,.07), 0 12px 30px rgba(11,31,49,.07);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --navy: #BAD3E7;
+    --navy-deep: #071723;
+    --teal: #5EC3B2;
+    --teal-ink: #7CD4C4;
+    --teal-wash: #10302C;
+    --amber: #DC9E60;
+    --amber-wash: #302311;
+
+    --ground: #0A1219;
+    --panel: #121D26;
+    --panel-2: #18232D;
+    --ink: #E1E9EF;
+    --ink-soft: #9FAEBA;
+    --ink-faint: #798894;
+    --line: #243240;
+    --line-soft: #1D2933;
+    --on-dark: #EAF1F7;
+    --on-dark-soft: #9CB3C6;
+    --on-teal: #06201C;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 32px rgba(0,0,0,.32);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --navy: #BAD3E7;
+  --navy-deep: #071723;
+  --teal: #5EC3B2;
+  --teal-ink: #7CD4C4;
+  --teal-wash: #10302C;
+  --amber: #DC9E60;
+  --amber-wash: #302311;
+
+  --ground: #0A1219;
+  --panel: #121D26;
+  --panel-2: #18232D;
+  --ink: #E1E9EF;
+  --ink-soft: #9FAEBA;
+  --ink-faint: #798894;
+  --line: #243240;
+  --line-soft: #1D2933;
+  --on-dark: #EAF1F7;
+  --on-dark-soft: #9CB3C6;
+  --on-teal: #06201C;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 32px rgba(0,0,0,.32);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16.5px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700; letter-spacing: -0.022em; color: var(--navy);
+  text-wrap: balance;
+}
+p { margin: 0; }
+.wrap { width: min(68rem, calc(100% - 3rem)); margin-inline: auto; }
+@media (max-width: 640px) { .wrap { width: calc(100% - 2rem); } }
+.narrow { max-width: 40rem; }
+
+.eyebrow {
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--ink-faint); font-weight: 500;
+}
+
+/* editor's note — not part of the page */
+.editor-note {
+  background: repeating-linear-gradient(135deg, var(--amber-wash), var(--amber-wash) 12px, transparent 12px, transparent 24px);
+  border-bottom: 2px dashed var(--amber);
+  padding: .7rem 0; font-size: .84rem; color: var(--amber); font-weight: 600;
+}
+.editor-note .wrap { display: flex; gap: .6rem; flex-wrap: wrap; align-items: baseline; }
+.editor-note span { font-weight: 400; color: var(--ink-soft); }
+
+.fill {
+  background: var(--amber-wash); color: var(--amber);
+  border: 1px dashed var(--amber); border-radius: 3px;
+  padding: 0 .3rem; font-family: "IBM Plex Mono", monospace; font-size: .84em; font-weight: 600;
+}
+
+/* ---------- hero ---------- */
+.hero { background: var(--navy-deep); padding: 3.6rem 0 0; }
+.hero h1 {
+  color: var(--on-dark); font-size: clamp(2.15rem, 5.4vw, 3.4rem);
+  font-weight: 800; line-height: 1.03; max-width: 17ch;
+}
+.hero .sub { color: var(--on-dark-soft); font-size: 1.1rem; margin-top: 1.1rem; max-width: 50ch; }
+.hero .sub b { color: var(--on-dark); font-weight: 600; }
+.cta-row { display: flex; gap: .8rem; flex-wrap: wrap; align-items: center; margin-top: 1.6rem; }
+.btn {
+  display: inline-block; font-family: Archivo, sans-serif; font-weight: 700; font-size: .95rem;
+  padding: .72rem 1.3rem; border-radius: 4px; text-decoration: none; border: 1.5px solid transparent;
+}
+.btn.primary { background: var(--teal); color: var(--on-teal); }
+.btn.ghost { border-color: color-mix(in srgb, var(--on-dark-soft) 45%, transparent); color: var(--on-dark); }
+.cta-note { color: var(--on-dark-soft); font-size: .82rem; }
+
+.clock-rail {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  margin-top: 2.6rem; border-top: 1px solid color-mix(in srgb, var(--on-dark-soft) 28%, transparent);
+}
+.tick {
+  padding: 1.1rem 1.2rem 1.4rem 0; border-right: 1px solid color-mix(in srgb, var(--on-dark-soft) 20%, transparent);
+  display: grid; gap: .25rem; align-content: start;
+}
+.tick:last-child { border-right: 0; }
+@media (max-width: 700px) { .tick { border-right: 0; padding-right: 0; } }
+.tick .t {
+  font-family: "IBM Plex Mono", monospace; font-size: 1.05rem; font-weight: 600;
+  color: var(--teal); font-variant-numeric: tabular-nums;
+}
+.tick .d { color: var(--on-dark-soft); font-size: .84rem; line-height: 1.4; }
+
+/* ---------- sections ---------- */
+section { padding: 3.4rem 0; }
+section.band { background: var(--panel); border-block: 1px solid var(--line); }
+.sec-head { max-width: 56ch; margin-bottom: 1.7rem; }
+.sec-head h2 { font-size: clamp(1.55rem, 3.2vw, 2.05rem); line-height: 1.13; margin-top: .4rem; }
+.sec-head p { margin-top: .7rem; color: var(--ink-soft); }
+.prose { max-width: 62ch; color: var(--ink-soft); }
+.prose + .prose { margin-top: .85rem; }
+.prose strong { color: var(--ink); font-weight: 600; }
+
+/* facts */
+.facts { display: grid; gap: .1rem; border-top: 2px solid var(--navy); max-width: 62rem; }
+.fact-row {
+  display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); gap: 1.3rem;
+  padding: .95rem 0; border-bottom: 1px solid var(--line-soft); align-items: baseline;
+}
+@media (max-width: 700px) { .fact-row { grid-template-columns: 1fr; gap: .25rem; } }
+.fact-row .k {
+  font-family: "IBM Plex Mono", monospace; font-size: .88rem; font-weight: 600;
+  color: var(--teal-ink); font-variant-numeric: tabular-nums;
+}
+.fact-row .v { color: var(--ink-soft); font-size: .96rem; }
+.fact-row .v b { color: var(--ink); font-weight: 600; }
+
+/* three audiences */
+.who { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+.who-card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 4px;
+  padding: 1.15rem 1.2rem 1.3rem; display: grid; gap: .45rem; align-content: start;
+}
+section.band .who-card { background: var(--panel-2); }
+.who-card h3 { font-size: 1.02rem; }
+.who-card p { font-size: .9rem; color: var(--ink-soft); line-height: 1.5; }
+
+/* what you get */
+.gets { display: grid; gap: .1rem; border-top: 2px solid var(--navy); }
+.get {
+  display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 1.4rem;
+  padding: 1.05rem 0; border-bottom: 1px solid var(--line-soft); align-items: start;
+}
+@media (max-width: 760px) { .get { grid-template-columns: 1fr; gap: .3rem; } }
+.get h3 { font-size: 1.03rem; }
+.get .free { color: var(--teal-ink); font-size: .78rem; font-family: "IBM Plex Mono", monospace; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; display: block; margin-top: .15rem; }
+.get p { font-size: .95rem; color: var(--ink-soft); }
+
+/* outcomes */
+.outcomes { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: .5rem 2rem; max-width: 62rem; }
+.out { display: grid; grid-template-columns: auto minmax(0,1fr); gap: .6rem; align-items: baseline; padding: .35rem 0; }
+.out .m { color: var(--teal); font-weight: 700; }
+.out p { font-size: .95rem; color: var(--ink-soft); }
+
+/* author */
+.author-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 2.4rem; align-items: start; }
+@media (max-width: 860px) { .author-wrap { grid-template-columns: 1fr; gap: 1.6rem; } }
+.author-card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 4px;
+  box-shadow: var(--shadow); padding: 1.4rem 1.5rem 1.5rem; display: grid; gap: .8rem;
+}
+.author-card .name { font-family: Archivo, sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--navy); }
+.author-card p { font-size: .94rem; color: var(--ink-soft); }
+.never { display: grid; gap: .35rem; margin-top: .3rem; }
+.never li { font-size: .89rem; color: var(--ink-soft); }
+.never-head { font-size: .72rem; font-family: "IBM Plex Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; }
+ul { margin: 0; padding-left: 1.1rem; }
+
+/* pricing */
+.tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
+.tier {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 4px;
+  padding: 1.25rem 1.25rem 1.4rem; display: grid; gap: .55rem; align-content: start;
+}
+.tier.push { border: 1.5px solid var(--teal); box-shadow: var(--shadow); position: relative; }
+.tier.push::before {
+  content: "Most people should buy this";
+  position: absolute; top: -.65rem; left: 1.15rem;
+  background: var(--teal); color: var(--on-teal);
+  font-family: "IBM Plex Mono", monospace; font-size: .6rem; letter-spacing: .09em;
+  text-transform: uppercase; padding: .18rem .5rem; border-radius: 2px; font-weight: 600;
+}
+.tier .n { font-family: "IBM Plex Mono", monospace; font-size: .68rem; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-faint); }
+.tier .p { font-family: Archivo, sans-serif; font-weight: 800; font-size: 2rem; color: var(--navy); line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.tier.push .p { color: var(--teal-ink); }
+.tier ul { display: grid; gap: .25rem; margin-top: .2rem; }
+.tier li { font-size: .87rem; color: var(--ink-soft); line-height: 1.45; }
+.tier .btn { margin-top: .5rem; text-align: center; font-size: .88rem; padding: .55rem 1rem; }
+.tier .btn.primary { background: var(--teal); }
+.tier .btn.quiet { border-color: var(--line); color: var(--ink); }
+
+/* faq */
+.faq { display: grid; gap: 1.15rem; max-width: 64ch; }
+.qa h3 { font-size: 1rem; }
+.qa p { font-size: .95rem; color: var(--ink-soft); margin-top: .2rem; }
+
+/* close */
+.close { background: var(--navy-deep); padding: 3.2rem 0; }
+.close h2 { color: var(--on-dark); font-size: clamp(1.6rem, 3.6vw, 2.2rem); max-width: 24ch; line-height: 1.12; }
+.close p { color: var(--on-dark-soft); margin-top: .9rem; max-width: 52ch; }
+
+footer { padding: 2rem 0 3rem; font-size: .82rem; color: var(--ink-faint); }
+footer .wrap { display: grid; gap: .45rem; max-width: 66ch; }
+a { color: var(--teal-ink); }
+a:focus-visible, .btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+</style>
+
+<div class="editor-note">
+  <div class="wrap">
+    Draft — remove this bar before publishing.
+    <span>Every dashed marker is a real fact only you can supply. Do not soften or inflate them; the page works because it is checkable.</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Most people sign their exit papers before they know what they're owed.</h1>
+    <p class="sub">Four clocks start on your last working day. <b>Wages inside two working days. Gratuity inside thirty.</b> A provident-fund withdrawal that can cost you 10% in tax if you get the timing wrong. And a health policy that may already have ended without anyone telling you.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#">Build your exit schedule — free</a>
+      <a class="btn ghost" href="#pricing">See what's in the kit</a>
+      <span class="cta-note">No account. Nothing leaves your browser.</span>
+    </div>
+    <div class="clock-rail">
+      <div class="tick"><span class="t">2 working days</span><span class="d">Wages due after your last working day, under the Code on Wages</span></div>
+      <div class="tick"><span class="t">30 days</span><span class="d">The window in which gratuity is generally payable once it becomes due</span></div>
+      <div class="tick"><span class="t">1 and 2 months</span><span class="d">When a PF advance, then final settlement, become available</span></div>
+      <div class="tick"><span class="t">Unknown</span><span class="d">The date your employer's health cover ends — until you get it in writing</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">The problem</p>
+      <h2>None of this is secret. It's just scattered, dated, and easy to find three weeks too late.</h2>
+      <p>Most of what's written about layoffs in India is American advice that doesn't apply, or a ₹99 PDF assembled from blog posts. The actual checkable facts sit on government portals, in language nobody reads during the worst week of their working life.</p>
+    </div>
+    <div class="facts">
+      <div class="fact-row">
+        <span class="k">Nov 2025</span>
+        <span class="v">The four Labour Codes came into force, introducing a <b>common definition of "wages" with a 50% allowance rule</b> that can change the base your gratuity is calculated on. An old salary-structure calculator can now give you the wrong number.</span>
+      </div>
+      <div class="fact-row">
+        <span class="k">₹20 lakh</span>
+        <span class="v">The current cap on gratuity, generally paid at <b>15 days' wages per completed year</b>. Fixed-term employees became eligible at <b>one year</b> on contract expiry, not five.</span>
+      </div>
+      <div class="fact-row">
+        <span class="k">10% TDS</span>
+        <span class="v">A taxable PF withdrawal before five years of continuous service can attract TDS <b>under section 192A</b> above ₹50,000. Service with a previous employer can count — if the PF was transferred.</span>
+      </div>
+      <div class="fact-row">
+        <span class="k">₹25 lakh</span>
+        <span class="v">The statutory ceiling on leave-encashment exemption for non-government employees, on a lower-of calculation. <b>Whether you can encash at all</b> is set by your employer's policy — a separate question people routinely merge with this one.</span>
+      </div>
+      <div class="fact-row">
+        <span class="k">Day one</span>
+        <span class="v">Group medical cover can end <b>on your last working day</b>, at month end, or on another policy-defined date. Not, as most people assume, at the end of a severance period.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Who it's for</p>
+      <h2>Two of these are the same person, a month apart</h2>
+    </div>
+    <div class="who">
+      <div class="who-card">
+        <h3>You were laid off this week</h3>
+        <p>Start with the 72-hour sequence: what to get in writing before access ends, what to ask HR, what not to sign, and how to work out your runway before you make a decision you can't reverse.</p>
+      </div>
+      <div class="who-card">
+        <h3>You think it's coming</h3>
+        <p>Reorgs, a hiring freeze, your project cancelled. Everything here is easier to arrange while you still have a laptop, a payslip and an active health policy.</p>
+      </div>
+      <div class="who-card">
+        <h3>You've been out a while</h3>
+        <p>Reset the runway, pick one target instead of five, and build one piece of proof that you're current — instead of collecting more courses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">What you get</p>
+      <h2>Things you make, not things you read</h2>
+      <p>Every module ends in an artifact — a tracker, a number, a plan — rather than a chapter summary.</p>
+    </div>
+    <div class="gets">
+      <div class="get">
+        <div><h3>The Exit Clock</h3><span class="free">Free, and free forever</span></div>
+        <p>Enter your last working day and it lays out every deadline with the rule behind it and the wording to send. Runs entirely in your browser — no account, no server, nothing stored anywhere you can't see.</p>
+      </div>
+      <div class="get">
+        <div><h3>The India Edition playbook</h3><span class="free">37 pages</span></div>
+        <p>Twelve modules: continuity before an exit, the first 72 hours, final dues and PF and gratuity and insurance, financial runway, mindset and family, career direction, resume and LinkedIn, AI readiness, job search, interviews and negotiation, and a 90-day comeback.</p>
+      </div>
+      <div class="get">
+        <div><h3>The Action Workbook</h3><span class="free">22 pages, 20 worksheets</span></div>
+        <p>Readiness scorecard, exit facts sheet, dues tracker, insurance continuity sheet, expense cut ladder, skill-gap map, interview story bank, offer scorecard.</p>
+      </div>
+      <div class="get">
+        <div><h3>The Runway Calculator</h3><span class="free">Editable spreadsheet</span></div>
+        <p>Your survival burn, your runway in months, your stress date, your exit dues tracked component by component, and an offer comparison that weighs more than salary.</p>
+      </div>
+      <div class="get">
+        <div><h3>Ten role packs</h3><span class="free">One free · all ten in Complete</span></div>
+        <p>Backend, frontend, QA, DevOps, data, embedded, security, product, sales, marketing. Each is a standalone guide: what to learn, a 30-day proof project broken into four weeks, the words that get you found, and three interview questions you should be able to answer. Take the one for your role free.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Afterwards</p>
+      <h2>What you should be able to do</h2>
+    </div>
+    <div class="outcomes">
+      <div class="out"><span class="m">→</span><p>Ask for a component-wise settlement calculation, and know whether the one you get is right.</p></div>
+      <div class="out"><span class="m">→</span><p>Say your runway in months, and name the date by which you need a different plan.</p></div>
+      <div class="out"><span class="m">→</span><p>Know the exact date your health cover ends, and what replaces it.</p></div>
+      <div class="out"><span class="m">→</span><p>Decide about your PF, instead of defaulting into a withdrawal.</p></div>
+      <div class="out"><span class="m">→</span><p>Explain what you're good at in outcome language, aimed at a specific role.</p></div>
+      <div class="out"><span class="m">→</span><p>Show one piece of evidence that you're current with AI in your own field.</p></div>
+      <div class="out"><span class="m">→</span><p>Run a job search with a weekly number attached, not by refreshing job boards.</p></div>
+      <div class="out"><span class="m">→</span><p>Walk into a negotiation knowing what your runway does to your position.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Who wrote this</p>
+      <h2>Advice about your settlement shouldn't come from an anonymous PDF</h2>
+    </div>
+    <div class="author-wrap">
+      <div class="author-card">
+        <p class="name"><span class="fill">[[FILL: your name]]</span></p>
+        <p><span class="fill">[[FILL: role]]</span>, based in <span class="fill">[[FILL: city]]</span>.</p>
+        <p><span class="fill">[[FILL: 2–3 sentences of real background — what you've actually done, for how long, in what industry, plus one verifiable detail such as a company or a published piece]]</span></p>
+        <p><span class="fill">[[FILL: why you built this — the real reason, 3–5 sentences. The most important paragraph on your site and the only one nobody else can write]]</span></p>
+        <p><a href="#"><span class="fill">[[FILL: LinkedIn URL]]</span></a></p>
+      </div>
+      <div>
+        <p class="prose"><strong>I'm not a lawyer, a chartered accountant, an insurance adviser or a financial planner.</strong> Nothing here is advice about your specific situation, and I'd be careful of anyone selling that online at a fixed price.</p>
+        <p class="prose">What this kit does is narrower and, I think, more useful: it tells you which questions to ask, which deadlines start when, and where the official rule actually lives — so that when you do talk to HR, or a CA, or a lawyer, you already know what you're asking about.</p>
+        <p class="prose"><strong>Every regulatory statement comes from a primary official source</strong> — the Ministry of Labour, EPFO, the Income Tax Department, IRDAI, ESIC — not from a blog summary or another kit. Each carries the date it was verified, and where a rule was in flux when I wrote it, the kit says so and tells you to check the live portal instead of trusting a printed number.</p>
+        <p class="prose"><strong>It won't be right forever.</strong> Rules change. So there's a public changelog, a review every quarter, and an email to everyone on the current edition when something moves. If you find a mistake, tell me and I'll fix it — I'd rather be corrected than trusted for the wrong reasons.</p>
+        <div class="never">
+          <p class="never-head">What I'll never do</p>
+          <ul class="never">
+            <li>Promise you a job, an interview, a settlement figure, or eligibility for a government benefit.</li>
+            <li>State a rule without saying where it comes from and when it was checked.</li>
+            <li>Publish anyone's layoff story, screenshot or employer's name to sell copies.</li>
+            <li>Ask you to paste your salary or your exit letter into anything I control. The Exit Clock runs in your browser for exactly this reason.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Pricing</p>
+      <h2>Priced against what's at stake, not against page count</h2>
+    </div>
+    <div class="tiers">
+      <div class="tier">
+        <p class="n">Core</p>
+        <p class="p">₹499</p>
+        <ul>
+          <li>The 37-page playbook</li>
+          <li>The 22-page workbook</li>
+          <li>Runway calculator</li>
+          <li>Fillable worksheets</li>
+        </ul>
+        <a class="btn quiet" href="#">Get Core</a>
+      </div>
+      <div class="tier push">
+        <p class="n">Complete</p>
+        <p class="p">₹1,499</p>
+        <ul>
+          <li>Everything in Core</li>
+          <li>The scripts pack — what to send HR, the insurer, the escalation</li>
+          <li>All ten role packs as standalone guides, each with its own 30-day plan</li>
+          <li>Twelve months of regulatory updates</li>
+        </ul>
+        <a class="btn primary" href="#">Get Complete</a>
+      </div>
+      <div class="tier">
+        <p class="n">Assisted</p>
+        <p class="p">₹4,999</p>
+        <ul>
+          <li>Everything in Complete</li>
+          <li>An hour on your own exit letter, dues sheet and runway</li>
+          <li>One offer-comparison session</li>
+          <li>Limited slots</li>
+        </ul>
+        <a class="btn quiet" href="#">Check availability</a>
+      </div>
+    </div>
+    <p class="prose" style="margin-top:1.3rem;">About a day of a mid-level salary, against a settlement usually worth lakhs. <strong>Seven days, no questions, full refund</strong> — you don't have to explain why. Employers: seat licences for teams and outplacement programmes are priced per cohort, <span class="fill">[[FILL: contact email]]</span>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Honest answers</p>
+      <h2>The questions people actually ask</h2>
+    </div>
+    <div class="faq">
+      <div class="qa">
+        <h3>Is this legal or tax advice?</h3>
+        <p>No. It's dated educational material built from official sources, with every claim marked with the date it was verified. It tells you what to ask and where the rule lives, so that when you do speak to HR or a professional, you know what you're asking about.</p>
+      </div>
+      <div class="qa">
+        <h3>Will it get me a job?</h3>
+        <p>No — and be careful of anything that says otherwise. It will make your search measurable and your evidence stronger. The market does the rest.</p>
+      </div>
+      <div class="qa">
+        <h3>Is it current?</h3>
+        <p>It's the India Edition, September 2026, and it won't be right forever. The changelog is public whether or not you've bought anything, every regulatory claim carries a verification date, and buyers get corrections by email for twelve months.</p>
+      </div>
+      <div class="qa">
+        <h3>I'm not in tech. Is this useful?</h3>
+        <p>Yes. The money, benefits, runway and family modules apply to any salaried professional, and four of the ten role packs are non-engineering.</p>
+      </div>
+      <div class="qa">
+        <h3>Why not just ask an AI chatbot?</h3>
+        <p>Ask one when your gratuity is due and it will answer confidently without asking which year you joined, whether you're fixed-term, or which wage base your employer used. This is a sequence with the sources attached — and a tool that does the date arithmetic for your actual exit.</p>
+      </div>
+      <div class="qa">
+        <h3>What happens to what I type in?</h3>
+        <p>Nothing. The Exit Clock computes everything in your browser and saves it only on your own device. There's no account and no server holding your salary, your exit date or your family's details.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap">
+    <h2>You can't control whether the layoff happens.</h2>
+    <p>You can control whether you find out about a deadline before it passes, or three weeks after.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#">Build your exit schedule — free</a>
+      <a class="btn ghost" href="#pricing">Get the Complete kit — ₹1,499</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>The Layoff Kit, India Edition v1.0.1 · <a href="#">Licence</a> · <a href="#">Changelog</a> · <a href="#">Refunds</a> · <span class="fill">[[FILL: contact email]]</span></p>
+    <p>General educational information for India. Not legal, tax, investment, medical or mental-health advice. Employment rights depend on your duties, contract, employer, state, wage level and the facts of your exit, and government rules and portals change. Verify the current rule and get qualified advice before high-stakes decisions.</p>
+  </div>
+</footer>

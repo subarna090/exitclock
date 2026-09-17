@@ -1,0 +1,1 @@
+- [Static page patchability](static-site-maintenance.md) — keep standalone HTML multiline so post-build accessibility and behavior fixes stay precise.
