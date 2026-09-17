@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Exit Clock monogram">
+  <defs><clipPath id="c"><circle cx="200" cy="200" r="200"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect width="400" height="400" fill="#0B1B30"/>
+    <circle cx="200" cy="200" r="132" fill="none" stroke="#FFCF33" stroke-width="3" opacity=".5"/>
+    <g stroke="#FFCF33" stroke-width="4" stroke-linecap="square">
+      <line x1="200" y1="72" x2="200" y2="92"/><line x1="200" y1="308" x2="200" y2="328"/>
+      <line x1="72" y1="200" x2="92" y2="200"/><line x1="308" y1="200" x2="328" y2="200"/>
+    </g>
+    <g stroke="#FFCF33" stroke-width="7" stroke-linecap="round">
+      <line x1="200" y1="200" x2="200" y2="132"/><line x1="200" y1="200" x2="252" y2="228"/>
+    </g>
+    <circle cx="200" cy="200" r="8" fill="#FFCF33"/>
+    <text x="200" y="352" text-anchor="middle" fill="#8FA4B8" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="21" font-weight="700" letter-spacing="3">SUBARNA DAS</text>
+  </g>
+</svg>

@@ -54,10 +54,40 @@
   shadowHeader();
   window.addEventListener("scroll", shadowHeader, { passive: true });
 
-  document.querySelectorAll("[data-checkout]").forEach(function (link) {
-    link.href = config.checkoutUrl;
-  });
+  function unset(value) { return !value || value.indexOf("PLACEHOLDER") !== -1; }
+
+  var checkoutLinks = document.querySelectorAll("[data-checkout]");
+  if (unset(config.checkoutUrl)) {
+    /* No storefront URL yet: keep the buttons on the page but never send anyone to a dead link. */
+    checkoutLinks.forEach(function (link) {
+      link.setAttribute("href", "#pricing");
+      link.setAttribute("data-pending", "");
+      link.setAttribute("aria-disabled", "true");
+    });
+    var card = document.querySelector(".price-card");
+    if (card) {
+      var note = document.createElement("p");
+      note.className = "setup-note";
+      note.textContent = "Checkout not connected yet — set checkoutUrl in assets/js/site.js";
+      card.appendChild(note);
+    }
+  } else {
+    checkoutLinks.forEach(function (link) {
+      link.href = config.checkoutUrl;
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.removeAttribute("data-pending");
+      link.removeAttribute("aria-disabled");
+    });
+  }
+
   document.querySelectorAll("[data-changelog]").forEach(function (link) {
+    if (unset(config.changelogUrl)) {
+      /* Replace the dead anchor with its own text so the sentence still reads correctly. */
+      var text = document.createTextNode(link.textContent);
+      if (link.parentNode) link.parentNode.replaceChild(text, link);
+      return;
+    }
     link.href = config.changelogUrl;
   });
   document.querySelectorAll("[data-contact]").forEach(function (link) {

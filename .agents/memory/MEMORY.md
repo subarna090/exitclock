@@ -1,1 +1,2 @@
 - [Static page patchability](static-site-maintenance.md) — keep standalone HTML multiline so post-build accessibility and behavior fixes stay precise.
+- [GitHub repository pushes](github-repository-pushes.md) — use the standard GitHub connector API when the GitHub App credential cannot authenticate Git CLI pushes.
