@@ -228,7 +228,7 @@ h3, h4 { letter-spacing: -.02em; line-height: 1.2; }
    ========================================================================== */
 .hero {
   background: var(--dark-bg); color: var(--dark-ink);
-  padding-block: clamp(3.5rem, 7vw, 6rem) clamp(2.5rem, 5vw, 4rem);
+  padding-block: clamp(2.75rem, 5vw, 4.5rem) clamp(2.5rem, 5vw, 4rem);
   position: relative; overflow: hidden;
 }
 .hero::before {
@@ -242,14 +242,15 @@ h3, h4 { letter-spacing: -.02em; line-height: 1.2; }
   position: relative; z-index: 1;
 }
 .hero h1 {
-  font-size: clamp(2.35rem, 5.4vw, 4.05rem);
-  color: #fff; letter-spacing: -.038em; line-height: 1.02;
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+  color: #fff; letter-spacing: -.035em; line-height: 1.05;
 }
 .hero .lede {
   margin-top: 1.5rem; max-width: 33rem;
   font-size: clamp(1.02rem, 1.5vw, 1.2rem);
   line-height: 1.6; color: var(--dark-soft); text-wrap: pretty;
 }
+.hero .lede em { color: #fff; font-style: normal; font-weight: 600; }
 .hero .cta-row { margin-top: 2.25rem; }
 .hero-trust {
   margin-top: 1.15rem; font-size: .82rem; color: rgba(255, 255, 255, .5);
