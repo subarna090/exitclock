@@ -109,6 +109,18 @@ h3, h4 { letter-spacing: -.02em; line-height: 1.2; }
   margin-bottom: 1rem;
 }
 .dark-eyebrow { color: var(--yellow); }
+.eyebrow-pop {
+  display: inline-block;
+  position: relative;
+  margin-inline: .12em .08em;
+  padding: .1em .24em .14em;
+  color: var(--navy);
+  background: var(--yellow);
+  letter-spacing: .08em;
+  transform: rotate(-2deg);
+  box-shadow: .26em .22em 0 rgba(255, 255, 255, .2);
+  clip-path: polygon(2% 8%, 98% 0, 100% 88%, 3% 100%);
+}
 
 /* ---------- Buttons ---------- */
 .btn {
