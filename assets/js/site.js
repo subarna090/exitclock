@@ -48,11 +48,25 @@
       });
     });
   }
-  function shadowHeader() {
+  var buyBar = document.querySelector("[data-buy-bar]");
+  var hero = document.querySelector(".hero");
+  var pricing = document.getElementById("pricing");
+
+  function onScroll() {
     if (header) header.classList.toggle("scrolled", window.scrollY > 40);
+    if (!buyBar) return;
+    /* Show the bar once the hero CTA has scrolled away, hide it again over the pricing card. */
+    var pastHero = hero ? window.scrollY > hero.offsetHeight - 120 : window.scrollY > 600;
+    var atPricing = false;
+    if (pricing) {
+      var box = pricing.getBoundingClientRect();
+      atPricing = box.top < window.innerHeight && box.bottom > 0;
+    }
+    buyBar.hidden = !pastHero || atPricing;
   }
-  shadowHeader();
-  window.addEventListener("scroll", shadowHeader, { passive: true });
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
 
   function unset(value) { return !value || value.indexOf("PLACEHOLDER") !== -1; }
 

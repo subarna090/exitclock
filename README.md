@@ -21,15 +21,26 @@ Change `price` and `listPrice` once in `assets/js/site.js`. The displayed pricin
 
 ## Palette
 
+Brand tokens are fixed; the semantic tokens below them flip under `prefers-color-scheme: dark`.
+
 - `--navy: #0B1B30`
 - `--navy-soft: #14304A`
 - `--yellow: #FFCF33`
-- `--ink: #142029`
-- `--ink-soft: #4A5865`
-- `--ground: #F4F6F8`
+- `--yellow-deep: #E8B41C`
+- `--ink: #141C25`
+- `--ink-soft: #55636F`
+- `--ground: #FBFBF9`
 - `--panel: #FFFFFF`
-- `--line: #D7DFE6`
-- `--amber: #A25A15`
+- `--line: #E2E6EA`
+- `--accent-ink: #8C4D0F`
+
+## Home page structure
+
+The landing page is ordered so the product is legible within a few seconds: hero (what it is,
+who it's for, price, product shot), the offer in three beats, the four deadline clocks, the free
+Exit Clock tool, what's inside, who it's for, why it exists, the author, pricing, FAQ, final CTA.
+A sticky buy bar appears on small screens once the hero CTA scrolls away, and hides again over
+the pricing card.
 
 ## Run locally
 
